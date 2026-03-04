@@ -364,11 +364,16 @@ export function filterData(
       if (record.is_aggregated === true) {
         // Aggregated (parent) records contain totals that overlap with their children.
         // To prevent double-counting:
-        // - If user explicitly selected THIS segment, INCLUDE the parent total
+        // - In SEGMENT MODE: Always exclude aggregated parents (show children individually instead)
+        // - In GEOGRAPHY MODE: If user explicitly selected THIS segment, INCLUDE the parent total
         //   (children will be excluded below)
         // - Otherwise, exclude aggregated records
         if (isExplicitlySelectedSegment) {
-          // User selected this exact parent segment - show its total
+          if (filters.viewMode === 'segment-mode') {
+            // Segment mode: exclude aggregated parent, children will be shown individually
+            return false
+          }
+          // Geography mode: show the aggregated total per geography
           // Allow through
         } else if (!isRegionalSegmentType) {
           return false
@@ -398,17 +403,18 @@ export function filterData(
             }
           } else {
             // Check if this leaf's parent is one of the explicitly selected segments
-            // If so, the aggregated parent record is already included - skip the leaf to avoid double-counting
             const hierarchy = record.segment_hierarchy
             const parentIsSelected = selectedLevel1Segments.some(selectedSeg =>
               hierarchy.level_1 === selectedSeg
             )
 
             if (parentIsSelected && !isExplicitlySelectedSegment) {
-              // Parent aggregated record is already included - exclude this leaf child
-              // BUT if this leaf IS the explicitly selected segment (flat segment with no children),
-              // include it because there's no separate aggregated parent record for flat segments
-              return false
+              // In SEGMENT MODE: show children individually (don't exclude them)
+              // In GEOGRAPHY MODE: parent total is shown instead, so exclude children
+              if (filters.viewMode !== 'segment-mode') {
+                return false
+              }
+              // In segment mode, allow children through to show as separate bars/lines
             }
 
             // For other cases, check if this leaf belongs to any selected segment
@@ -1228,20 +1234,9 @@ export function prepareLineChartData(
           })
 
           if (matchedSegment) {
-            // If this is an aggregated record for a selected segment, use its value directly
-            if (record.is_aggregated && selectedSegmentNames.includes(record.segment)) {
-              key = record.segment
-              // Mark that we're using the aggregated record for this segment
-              usedAggregatedRecords.set(key, true)
-            } else {
-              // For child records, group under their parent (the selected segment)
-              // But only if we haven't already used an aggregated record for this segment
-              if (usedAggregatedRecords.has(matchedSegment)) {
-                // Skip - we already have the aggregated value
-                return
-              }
-              key = matchedSegment
-            }
+            // In segment mode, show each child as its own line
+            // Use the record's own segment name (e.g., "Picker Lines") not the parent
+            key = record.segment
           } else {
             // No match - skip this record
             return
@@ -1887,13 +1882,9 @@ export function prepareIntelligentMultiLevelData(
         })
 
         if (matchedSegment) {
-          // If this is an aggregated record for a selected segment, use that segment as key
-          if (record.is_aggregated && selectedLevel1Segments.includes(record.segment)) {
-            key = record.segment
-          } else {
-            // For child records, group under their parent (the selected segment)
-            key = matchedSegment
-          }
+          // In segment mode, show each child as its own series
+          // Use the record's own segment name (e.g., "Picker Lines") not the parent ("Grouping & Picking Systems")
+          key = record.segment
         } else {
           // No match - skip this record
           return

@@ -385,25 +385,25 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
       const total = items.reduce((sum, item) => sum + item.value, 0)
 
       return (
-        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px] max-w-[350px]">
+        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px] max-w-[420px]">
           <p className="font-semibold text-black mb-2 pb-2 border-b border-gray-200">
             Year: <span className="text-blue-600">{year}</span>
           </p>
           <div className="mb-2">
-            <div className="font-semibold text-black mb-2">{hoveredStackId}</div>
+            <div className="font-semibold text-black mb-2 break-words">{hoveredStackId}</div>
             {items.map((item, idx) => (
-              <div key={idx} className="flex items-center justify-between gap-4 ml-4 mb-1">
-                <div className="flex items-center gap-2">
-                  <div 
-                    className="w-2 h-2 rounded" 
+              <div key={idx} className="flex items-start justify-between gap-4 ml-4 mb-1">
+                <div className="flex items-start gap-2 min-w-0 flex-1">
+                  <div
+                    className="w-2 h-2 rounded flex-shrink-0 mt-1"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-sm text-black">{item.name}</span>
+                  <span className="text-sm text-black break-words">{item.name}</span>
                 </div>
-                <span className="text-sm font-medium text-black">
-                  {item.value.toLocaleString(undefined, { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
+                <span className="text-sm font-medium text-black flex-shrink-0 whitespace-nowrap">
+                  {item.value.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
                   })} {unit}
                 </span>
               </div>
@@ -432,27 +432,27 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
 
     // Non-stacked tooltip (original)
     return (
-      <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px]">
+      <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px] max-w-[420px]">
         <p className="font-semibold text-black mb-3 pb-2 border-b border-gray-200">
           Year: <span className="text-blue-600">{year}</span>
         </p>
         <div className="space-y-2">
           {payload.map((entry: any, index: number) => (
-            <div key={index} className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <div 
-                  className="w-3 h-3 rounded" 
+            <div key={index} className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-2 min-w-0 flex-1">
+                <div
+                  className="w-3 h-3 rounded flex-shrink-0 mt-0.5"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-sm font-medium text-black">
+                <span className="text-sm font-medium text-black break-words">
                   {entry.name}
                 </span>
               </div>
-              <div className="text-right">
+              <div className="text-right flex-shrink-0 whitespace-nowrap">
                 <span className="text-sm font-semibold text-black">
-                  {entry.value.toLocaleString(undefined, { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
+                  {entry.value.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
                   })}
                 </span>
                 <span className="text-xs text-black ml-1">

@@ -1152,8 +1152,8 @@ async function processSegmentTypeAsync(
           cagr = data.CAGR
         }
       } else {
-        // Calculate CAGR from base year (2023) to forecast year
-        const cagrStartYear = allYears[0] + 4 // Base year = 2023 for 2019-2031 data
+        // Calculate CAGR from base year (2026) to forecast year (2033)
+        const cagrStartYear = allYears[0] + 5 // Base year = 2026 for 2021-2033 data
         const cagrEndYear = allYears[allYears.length - 1]
         const startVal = timeSeries[cagrStartYear] || 0
         const endVal = timeSeries[cagrEndYear] || 0
@@ -1455,15 +1455,29 @@ export async function processJsonDataAsync(
       }
     }
     
-    // Calculate market share for each record
+    // Calculate market share per segment_type + geography group
+    // This ensures shares add up to ~100% within the same segment type and geography
     const calculateMarketShare = (records: DataRecord[], year: number) => {
-      const yearTotal = records.reduce((sum, r) => sum + (r.time_series[year] || 0), 0)
+      // Group records by segment_type + geography
+      const groups = new Map<string, DataRecord[]>()
       records.forEach(record => {
-        const value = record.time_series[year] || 0
-        record.market_share = yearTotal > 0 ? (value / yearTotal) * 100 : 0
+        const key = `${record.segment_type}::${record.geography}`
+        if (!groups.has(key)) groups.set(key, [])
+        groups.get(key)!.push(record)
+      })
+
+      // Calculate share within each group
+      groups.forEach((groupRecords) => {
+        // Only include non-aggregated (leaf) records in the total to avoid double counting
+        const leafRecords = groupRecords.filter(r => !r.is_aggregated)
+        const groupTotal = leafRecords.reduce((sum, r) => sum + (r.time_series[year] || 0), 0)
+        groupRecords.forEach(record => {
+          const value = record.time_series[year] || 0
+          record.market_share = groupTotal > 0 ? (value / groupTotal) * 100 : 0
+        })
       })
     }
-    
+
     // Calculate market share for base year
     calculateMarketShare(valueRecords, baseYear)
     if (volumeRecords.length > 0) {
@@ -1472,9 +1486,9 @@ export async function processJsonDataAsync(
     
     // Build metadata
     const metadata: Metadata = {
-      market_name: 'Normothermic Machine Perfusion Market',
+      market_name: 'Secondary Packaging Equipment Market',
       market_type: 'Market Analysis',
-      industry: 'Healthcare & Pharmaceuticals',
+      industry: 'Packaging & Industrial Equipment',
       years: allYears,
       start_year: startYear,
       base_year: baseYear,

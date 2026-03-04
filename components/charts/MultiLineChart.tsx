@@ -210,7 +210,7 @@ export function MultiLineChart({ title, height = 400 }: MultiLineChartProps) {
                   : data.metadata.volume_unit
                 
                 return (
-                  <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px]">
+                  <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px] max-w-[420px]">
                     <p className="font-semibold text-black mb-3 pb-2 border-b border-gray-200">
                       Year: <span className="text-blue-600">{year}</span>
                     </p>
@@ -219,23 +219,23 @@ export function MultiLineChart({ title, height = 400 }: MultiLineChartProps) {
                         const value = entry.value as number
                         const name = entry.name as string
                         const color = entry.color
-                        
+
                         return (
-                          <div key={index} className="flex items-center justify-between gap-4">
-                            <div className="flex items-center gap-2">
-                              <div 
-                                className="w-3 h-3 rounded-full" 
+                          <div key={index} className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-2 min-w-0 flex-1">
+                              <div
+                                className="w-3 h-3 rounded-full flex-shrink-0 mt-0.5"
                                 style={{ backgroundColor: color }}
                               ></div>
-                              <span className="text-sm font-medium text-black">
+                              <span className="text-sm font-medium text-black break-words">
                                 {name}
                               </span>
                             </div>
-                            <div className="text-right">
+                            <div className="text-right flex-shrink-0 whitespace-nowrap">
                               <span className="text-sm font-semibold text-black">
-                                {value.toLocaleString(undefined, { 
-                                  minimumFractionDigits: 2, 
-                                  maximumFractionDigits: 2 
+                                {value.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
                                 })}
                               </span>
                               <span className="text-xs text-black ml-1">

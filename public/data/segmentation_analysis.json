@@ -1,28 +1,36 @@
 {
   "Global": {
-    "By Type": {
-      "Sub-Normothermic Perfusion (20–34°C)": {},
-      "Warm or Normothermic Perfusion (35–37°C)": {}
+    "By Equipment Type": {
+      "Grouping & Picking Systems": {
+        "Picker Lines": {},
+        "Product Collators & Accumulation Systems": {}
+      },
+      "Secondary Bagging & Over-Wrapping Equipment": {
+        "Bagging Machines": {},
+        "Bundling & Banding Machines": {}
+      },
+      "Sleeve & Shrink Secondary Packaging Equipment": {},
+      "Box Forming Machines (Case Erectors, Tray Formers, Wraparound Formers)": {},
+      "Forming–Filling–Closing Machines": {},
+      "Others (Cartoning & Case Secondary Packaging Equipment, Case Sealing & Strapping Machines, Palletizing & End-of-Line Equipment, etc.)": {}
     },
-    "By Organ Type": {
-      "Liver": {},
-      "Heart": {},
-      "Lung": {},
-      "Kidney": {},
-      "Others (Pancreas, Small bowel / Intestine, Composite Tissues / Limb Perfusion (emerging use cases))": {}
+    "By Automation Level": {
+      "Manual": {},
+      "Semi-automatic and Fully Automatic": {}
     },
-    "Application / Use Case": {
-      "Organ Preservation": {},
-      "Viability Assessment": {},
-      "Physiologic Transport": {},
-      "Reconditioning Marginal Organs": {},
-      "Others (Research Use / Protocol development)": {}
+    "By Machine Architecture": {
+      "Conventional Mechanical Systems": {},
+      "Servo-based Non-robotic Systems": {},
+      "Robotic Systems": {}
     },
-    "By End User": {
-      "Hospitals & Clinics": {},
-      "Specialty Clinic/Centers": {},
-      "Transplant Centers": {},
-      "Others (Research Institutes/Centers, Organ Procurement Organizations, etc.)": {}
+    "By End-Use Industry": {
+      "Food & Beverage": {},
+      "Pharmaceuticals": {},
+      "Personal Care & Cosmetics": {},
+      "Household Chemicals": {},
+      "E-commerce & Logistics": {},
+      "Electronics & Electrical": {},
+      "Automotive & Industrial Goods": {}
     },
     "By Region": {
       "North America": {
@@ -32,19 +40,20 @@
       "Europe": {
         "U.K.": {},
         "Germany": {},
-        "Italy": {},
         "France": {},
+        "Italy": {},
         "Spain": {},
         "Russia": {},
+        "Turkey": {},
         "Rest of Europe": {}
       },
       "Asia Pacific": {
-        "China": {},
         "India": {},
+        "China": {},
         "Japan": {},
-        "South Korea": {},
-        "ASEAN": {},
         "Australia": {},
+        "ASEAN": {},
+        "South Korea": {},
         "Rest of Asia Pacific": {}
       },
       "Latin America": {
